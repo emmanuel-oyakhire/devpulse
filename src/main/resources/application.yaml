@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: devpulse
+  datasource:
+    url: jdbc:postgresql://localhost:5432/devpulse
+    username: devpulse_user
+    password: devpulse_pass
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+
