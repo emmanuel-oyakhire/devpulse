@@ -4,17 +4,25 @@ import com.devpulse.dto.AuthResponseDto;
 import com.devpulse.dto.LoginRequestDto;
 import com.devpulse.dto.RegisterRequestDto;
 import com.devpulse.service.AuthService;
+import com.devpulse.service.JwtService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     private final AuthService authService;
+    private final JwtService jwtService;
 
-    public AuthController (AuthService authService) {
+
+
+    public AuthController (AuthService authService, JwtService jwtService) {
         this.authService = authService;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("/register")
@@ -28,5 +36,14 @@ public class AuthController {
             @RequestBody LoginRequestDto request) {
         AuthResponseDto response = authService.login(request);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<Map<String, String>> getCurrentUser (
+      HttpServletRequest request) {
+        String authHeader = request.getHeader("Authorization");
+        String token = authHeader.substring(7);
+        String email = jwtService.extractEmail(token);
+        return ResponseEntity.ok(Map.of("email", email));
     }
 }

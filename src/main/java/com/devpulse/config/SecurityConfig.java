@@ -5,11 +5,21 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.ArrayList;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+private  final JwtAuthFilter jwtAuthFilter;
+
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -17,13 +27,32 @@ public class SecurityConfig {
                .csrf(csrf -> csrf.disable())
                .sessionManagement(session -> session
                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                       .authorizeHttpRequests(auth -> auth
+               .authorizeHttpRequests(auth -> auth
                                .requestMatchers("/api/auth/**").permitAll()
-                               .anyRequest().authenticated()
-                       )
+                               .anyRequest().authenticated())
                .httpBasic(httpBasic -> httpBasic.disable())
-               .formLogin(formLogin -> formLogin.disable());
+               .formLogin(formLogin -> formLogin.disable())
+               .anonymous(anonymous -> anonymous.disable())
+               .addFilterBefore(jwtAuthFilter,
+                       UsernamePasswordAuthenticationFilter.class);
                return http.build();
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> org.springframework.security.core.userdetails.User
+                .builder()
+                .username(username)
+                .password("")
+                .roles("USER")
+                .build();
+    }
+
+    @Bean
+    public org.springframework.security.authentication.AuthenticationManager authenticationManager(
+            org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration config)
+            throws Exception {
+        return config.getAuthenticationManager();
     }
 
 }
