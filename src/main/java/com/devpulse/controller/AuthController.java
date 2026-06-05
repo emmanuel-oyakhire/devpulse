@@ -38,12 +38,4 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<Map<String, String>> getCurrentUser (
-      HttpServletRequest request) {
-        String authHeader = request.getHeader("Authorization");
-        String token = authHeader.substring(7);
-        String email = jwtService.extractEmail(token);
-        return ResponseEntity.ok(Map.of("email", email));
-    }
 }
