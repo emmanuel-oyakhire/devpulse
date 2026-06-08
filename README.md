@@ -29,17 +29,20 @@ A production-grade REST API built with Java Spring Boot, PostgreSQL, and Docker.
 | POST | `/api/auth/login` | Login and get JWT token | No |
 
 ### Links
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/links` | Save a URL | Yes |
-| GET | `/api/links` | Get all your links | Yes |
+| Method | Endpoint          | Description        | Auth |
+|--------|-------------------|--------------------|------|
+| POST   | `/api/links`      | Save a URL         | Yes |
+| GET    | `/api/links`      | Get all your links | Yes |
+| DELETE | `/api/links/{id}` | Delete a link | Yes |
+
 
 ### Invoices
-| Method | Endpoint | Description | Auth |
-|--------|----------|-------------|------|
-| POST | `/api/invoices` | Create an invoice | Yes |
-| GET | `/api/invoices` | Get all your invoices | Yes |
-| PATCH | `/api/invoices/{id}/status` | Update invoice status | Yes |
+| Method | Endpoint                    | Description           | Auth |
+|--------|-----------------------------|-----------------------|------|
+| POST   | `/api/invoices`             | Create an invoice     | Yes |
+| GET    | `/api/invoices`             | Get all your invoices | Yes |
+| PATCH  | `/api/invoices/{id}/status` | Update invoice status | Yes |
+| DELETE | `/api/invoices/{id}`        | Delete an invoice     | Yes |
 
 ### User
 | Method | Endpoint | Description | Auth |
