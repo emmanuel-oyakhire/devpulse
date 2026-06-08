@@ -106,8 +106,27 @@ public class LinkService {
                 link.getDomain(),
                 link.getCreatedAt()
         );
-    }
 
+    }
+   public void deleteLink(Long id) {
+        User user = getCurrentUser();
+
+        Link link =  linkRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Link not found"));
+
+  if (!link.getId().equals(user.getId())) {
+      throw new RuntimeException("Unauthorized");
+  }
+  linkRepository.delete(link);
+   }
+
+    private User getCurrentUser() {
+        String email = SecurityContextHolder.getContext()
+                .getAuthentication().getName();
+
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
 
 
 }

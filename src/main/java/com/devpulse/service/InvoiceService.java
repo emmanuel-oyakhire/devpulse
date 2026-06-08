@@ -79,4 +79,18 @@ private InvoiceResponseDto toDto(Invoice invoice) {
                 invoice.getCreatedAt()
         );
 }
+
+public void deleteInvoice(Long id) {
+        User user = getCurrentUser();
+
+        Invoice invoice = invoiceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Invoice not found"));
+
+        if (!invoice.getUser().getId().equals(user.getId())) {
+
+            throw new RuntimeException("Unauthorized");
+        }
+        invoiceRepository.delete(invoice);
+}
+
 }

@@ -28,4 +28,10 @@ public class LinkController {
     public ResponseEntity<List<LinkResponseDto>> getUserLinks() {
         return ResponseEntity.ok(linkService.getUserLinks());
     }
+@DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLink(@PathVariable Long id) {
+        linkService.deleteLink(id);
+        return ResponseEntity.noContent().build();
+}
+
 }

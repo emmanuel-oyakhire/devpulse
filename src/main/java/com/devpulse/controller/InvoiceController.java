@@ -35,6 +35,11 @@ public class InvoiceController {
             @RequestParam InvoiceStatus status) {
         return ResponseEntity.ok(invoiceService.updateStatus(id, status));
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteInvoice(@PathVariable Long id) {
+        invoiceService.deleteInvoice(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
 
